@@ -1,0 +1,52 @@
+<div class="canvas-component">
+ <!-- <div>For delete project click and hold in existing project</div>  -->
+    <div class="controls-panel">
+      <select class="item-style size-selector"
+              [(ngModel)]="selectedSize"
+              (change)="onSizeSelect()"
+      >
+        <option *ngFor="let size of canvasSizes"
+                [value]="size">
+          {{size}}
+        </option>
+      </select>
+      <button class="item-style button-generate"
+              (click)="onGenerateCircles()">
+        Generate
+      </button>
+      <div class="picker-wrapper">
+        <div class="picker-inner"
+             [style.background-color]="currentColor"></div>
+        <input class="picker" type="color"
+               [(ngModel)]="currentColor" />
+      </div>
+      <button class="item-style button-reset"
+              (click)="onResetColor()">Reset</button>
+      <button class="item-style button-fill-all"
+              (click)="onFillCircles()">Fill all</button>
+      <button class="item-style button-save"
+              (click)="onSave()">Save</button>
+      <input class="item-style button-save" type="text" [(ngModel)]="projectName" placeholder="Input the name for canvas" />
+      <div class="projects-container">
+        <div *ngFor="let project of projectList"
+             class="item-style project"
+             (click)="selectProject(project)">
+          <p>Project Load: {{project.name}}</p>
+        </div>
+      </div>
+          <div *ngFor="let project of projectList; let i=index"
+              (click)="selectProject(project)">
+              <button class="item-style button-delete"
+              (click)="onDelete(i)">Delete {{project.name}}</button>
+        </div>
+    </div>
+    <br><br><br><br>
+    <div class="circles-container container-{{selectedSize}}">
+      <app-circle *ngFor="let circle of circles"
+                  [color]="circle.color"
+                  (click)="onCircleClick(circle)">
+      </app-circle>
+    </div>
+  </div>
+  
+  

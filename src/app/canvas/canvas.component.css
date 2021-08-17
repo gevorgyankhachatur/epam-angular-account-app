@@ -1,0 +1,122 @@
+.canvas-component {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: auto 100px;
+    height: auto;
+  }
+  
+  .controls-panel {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 1 100%;
+    max-width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 40px;
+  }
+  
+  .circles-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 380px;
+  }
+  
+  .projects-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 40px;
+  }
+  
+  .circles-container.container-100 {
+    width: 280px;
+  }
+  
+  .circles-container.container-225 {
+    width: 420px;
+  }
+  
+  .container-400 {
+    width: 560px;
+  }
+  
+  .picker-wrapper {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #000000;
+    margin-left: 10px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+  
+  .picker-inner {
+    display: flex;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 30px;
+  }
+  
+  .picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 30px;
+    opacity: 0;
+  }
+  
+  .item-style {
+    display: flex;
+    padding: 10px 20px;
+    margin: 2px 2px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    line-height: 1em;
+    border: 1px solid #aaa;
+    justify-content: space-around;
+    margin-left: 10px;
+  }
+  
+  .size-selector{
+    background: rgb(255, 106, 61);
+  }
+  
+  .button-generate {
+    background: rgb(154, 206, 124);
+  }
+  
+  .button-reset {
+    background: rgb(255, 196, 0);
+  }
+  
+  .button-fill-all {
+    background:  rgb(27, 120, 241);
+  }
+  
+  .button-save {
+    background: rgb(182, 182, 182);
+  }
+
+  .button-delete {
+    background: rgb(255, 17, 17);
+  }
+  
+  .project {
+    padding: 1px 5px;
+    background: rgb(109, 177, 71);
+  }
+  

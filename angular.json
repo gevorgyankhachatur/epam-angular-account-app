@@ -1,9 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "epam-angular-account-app": {
+    "epam-angular-forms-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/epam-angular-account-app",
+            "outputPath": "dist/epam-angular-forms-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "epam-angular-account-app:build:production"
+              "browserTarget": "epam-angular-forms-app:build:production"
             },
             "development": {
-              "browserTarget": "epam-angular-account-app:build:development"
+              "browserTarget": "epam-angular-forms-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "epam-angular-account-app:build"
+            "browserTarget": "epam-angular-forms-app:build"
           }
         },
         "test": {
@@ -97,6 +100,13 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "https://gevorgyankhachatur.github.io/epam-angular-account-app/",
+            "name": "Angular Schule Team"
           }
         }
       }
