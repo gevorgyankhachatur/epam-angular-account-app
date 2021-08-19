@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ICircle } from '../interfaces/circle.interface';
+import { Circle } from './../models/circle.model';
 import { ECircleCount } from '../enums/circle-count.enum';
 import { LocalStorageService } from '../services/storage.service';
 import { IProject } from '../interfaces/project.interface';
+import { Router } from '@angular/router';
+import { Project } from './../models/project.model';
 //import { delay, takeUntil, tap } from 'rxjs/operators';
 //import { fromEvent, pipe, Observable } from 'rxjs';
 
@@ -14,7 +17,9 @@ import { IProject } from '../interfaces/project.interface';
 export class CanvasComponent implements OnInit {
   circles: ICircle[] = [];
   projectName: string = '';
-  projectList: IProject[] = [];
+  selectedProjectId: string = '';
+  projectList: Project[] = [];
+  currentProjectList: Project[] = [];
   projectListName = 'circlesProject';
   canvasSizes: number[] = [
     ECircleCount.MIN, // 100
@@ -23,23 +28,27 @@ export class CanvasComponent implements OnInit {
   ];
   selectedSize: number = this.canvasSizes[0];
   currentColor: string = '#000';
- // mouseDown$!: Observable<any>;
- // mouseUp$!: Observable<any>;
+  isProjectClicked: boolean = false;
+  email!: string;
+  // mouseDown$!: Observable<any>;
+  // mouseUp$!: Observable<any>;
 
-  constructor(private storage: LocalStorageService) {}
+  constructor(private storage: LocalStorageService, private route: Router) {}
 
   ngOnInit(): void {
-    this.getProjects();
-    console.log(this.projectList);
+    const email = this.storage.get('currentUser');
+    !email ? this.logout() : this.getProjects(email);
   }
 
   onGenerateCircles(): void {
     this.resetColors();
-    console.log('this.circles: ', this.circles);
   }
 
   onSizeSelect(): void {
-    this.circles = [];
+    if (this.isEmpty(this.circles)) {
+      return;
+    }
+    this.resetColors();
   }
 
   onCircleClick(circle: ICircle): string {
@@ -56,11 +65,7 @@ export class CanvasComponent implements OnInit {
   resetColors(): void {
     this.circles = [];
     for (let i = 0; i < this.selectedSize; i++) {
-      this.circles.push({
-        id: i,
-        uid: this.newId(),
-        color: '',
-      });
+      this.circles.push(new Circle(i, this.newId(), ''));
     }
   }
 
@@ -88,8 +93,8 @@ export class CanvasComponent implements OnInit {
 
   onSave(): void {
     let isProjectNameUnique = true;
-    this.projectList.map((el) => {
-      if (el.name === this.projectName) {
+    this.projectList.map((elem) => {
+      if (elem.name === this.projectName) {
         alert('Already exists project with this name');
         isProjectNameUnique = false;
         return;
@@ -100,21 +105,48 @@ export class CanvasComponent implements OnInit {
       !this.projectName ||
       !isProjectNameUnique
     ) {
+      alert('For save you must create a project then add a unique name')
       return;
     }
-    this.projectList.push({
-      id: this.newId(),
-      name: this.projectName,
-      circles: this.circles,
-    });
-    this.setInStorage();
+    const project = new Project(
+      this.storage.get('currentUser') || '',
+      this.newId(),
+      this.projectName,
+      this.circles
+    );
+    this.addToProjectList(project);
+  }
+
+  onEdit(): void {
+    if (
+      this.isEmpty(this.circles) ||
+      !this.projectName
+    ) {
+      alert('For edit you must load a project then save it')
+      return;
+    }
+    let project = new Project();
+    this.currentProjectList.map((elem, index) => {
+      if (elem.id === this.selectedProjectId) {
+        project = this.currentProjectList[index];
+        this.currentProjectList.splice(index, 1);
+      }
+    })
+    this.projectList.map((elem, index) => {
+      if (elem.id === this.selectedProjectId) {
+        this.projectList.splice(index, 1);
+      }
+    })
+    project.name = this.projectName;
     this.projectName = '';
+    this.addToProjectList(project);
   }
 
   onDelete(i: number): void {
     this.projectList.splice(i, 1);
+    this.currentProjectList.splice(i, 1);
     this.setInStorage();
-    if (this.projectList.length === 0) {
+    if (this.currentProjectList.length === 0) {
       this.resetColors();
     }
   }
@@ -132,10 +164,16 @@ onHoldDelete(i: number) {
       }});
 }
 */
-  getProjects(): void {
+  getProjects(email: string): void {
+    this.currentProjectList = [];
     const projects = this.storage.get(this.projectListName);
     if (projects) {
       this.projectList = JSON.parse(projects);
+      this.projectList.map((elem) => {
+        if (elem.email === email) {
+          this.currentProjectList.push(elem);
+        }
+      });
     }
   }
 
@@ -143,5 +181,29 @@ onHoldDelete(i: number) {
     //this.onHoldDelete()
     this.circles = project.circles;
     this.selectedSize = project.circles.length;
+    this.projectName = project.name;
+    this.selectedProjectId = project.id;
+    this.isProjectClicked = true;
+  }
+
+  logout(): void {
+    this.storage.remove('currentUser');
+    this.route.navigate(['/']);
+  }
+
+  onInputChange(event: any): void {
+    if (event.target.value) {
+      this.projectName = event.target.value;
+    }
+  }
+
+  addToProjectList(project: Project): void {
+    if (project.id) {
+      this.projectList.push(project);
+      this.currentProjectList.push(project);
+      const projectsStr = JSON.stringify(this.projectList);
+      this.storage.set(this.projectListName, projectsStr);
+      this.projectName = '';
+    }
   }
 }

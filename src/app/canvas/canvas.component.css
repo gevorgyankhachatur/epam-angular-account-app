@@ -111,8 +111,16 @@
     background: rgb(182, 182, 182);
   }
 
+  .button-edit {
+    background: rgb(182, 182, 182);
+  }
+
   .button-delete {
-    background: rgb(255, 17, 17);
+    background: rgb(209, 26, 26);
+  }
+
+  .button-logout {
+    background: rgb(105, 0, 0);
   }
   
   .project {

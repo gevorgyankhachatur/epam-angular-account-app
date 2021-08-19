@@ -1,0 +1,65 @@
+<form (submit)="onSubmit()" [formGroup]="signUpForm">
+    <h1>Sign Up</h1>
+
+    <label>First name</label>
+    <input type="text" name='firstname' formControlName="firstname" [ngClass]="submitted && firstname().errors && firstname().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && firstname().errors && firstname().touched'>
+        <div *ngIf="submitted && firstname().hasError('required')">
+            Firstname can not be empty
+        </div>
+        <div *ngIf="submitted && firstname().hasError('minlength')">
+            Min length for firstname is 2
+        </div>
+    </div>
+
+    <label>Last name</label>
+    <input type="text" name='lastname' formControlName="lastname" [ngClass]="submitted && lastname().errors && lastname().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && lastname().errors && lastname().touched'>
+        <div *ngIf="submitted && lastname().hasError('required')">
+            Lastname can not be empty
+        </div>
+        <div *ngIf="submitted && lastname().hasError('minlength')">
+            Min length for lastname is 2
+        </div>
+    </div>
+
+    <label>Email</label>
+    <input type="text" name='email' formControlName="email" [ngClass]="submitted && email().errors && email().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && email().errors && email().touched'>
+        <div *ngIf="submitted && email().hasError('required')">
+            Please enter an email
+        </div>
+        <div *ngIf="submitted && email().hasError('contains')">
+            This email is already registered
+        </div>
+        <div *ngIf="submitted && email().hasError('pattern')">
+            Email is invalid. For example : example@email.org
+        </div>
+    </div>
+
+    <label>Password</label>
+    <input type="password" name='password' formControlName="password" [ngClass]="submitted && password().errors && password().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && password().errors && password().touched'>
+        <div *ngIf="submitted && password().hasError('required')">
+            Please enter a password
+        </div>
+        <div *ngIf="submitted && password().hasError('minlength')">
+            Min length for password is 6
+        </div>
+    </div>
+
+    <label>Confirm password</label>
+    <input type="password" name='confirmPassword' formControlName="confirmPassword" [ngClass]="submitted && confirmPassword().errors && confirmPassword().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && confirmPassword().errors && confirmPassword().touched'>
+        <div *ngIf="submitted && confirmPassword().hasError('required')">
+            Please enter your password again
+        </div>
+        <div *ngIf="submitted && confirmPassword().hasError('mustMatch')">
+            Passwords must match
+        </div>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+<p>Already have an account? <a routerLink="/">Sign in</a></p>

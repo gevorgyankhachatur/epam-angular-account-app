@@ -1,0 +1,23 @@
+<form (submit)='onSubmit()' [formGroup]="signInForm">
+    <h1>Login</h1>
+    <p *ngIf="wrongValues"> Wrong login values </p>    
+
+    <label>Email</label>
+    <input type="text" name='email' formControlName="email" [ngClass]="submitted && email().errors && email().touched ? 'hasError' : ''"/>
+    <div *ngIf='submitted && email().errors && email().touched'>
+        <div *ngIf="submitted && email().hasError('required')">
+            Please enter a Email
+        </div>
+    </div>
+
+    <label>Password</label>
+    <input type="password" name='password' formControlName="password" [ngClass]="submitted && password().errors && email().touched ? 'hasError' : ''"/>
+    <div  *ngIf='submitted && password().errors && password().touched'>
+        <div *ngIf="submitted && password().hasError('required')">
+            Please enter a password
+        </div>
+    </div>
+
+    <button type="submit">Login</button>
+</form>
+<p>Don't have an account? <a routerLink="/signup">Sign Up now</a></p>
